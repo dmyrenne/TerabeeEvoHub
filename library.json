@@ -1,0 +1,14 @@
+{
+    "name": "TerabeeEvoHub",
+    "version": "1.0.0",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/foo/bar.git"
+    },
+    "authors":
+    {
+        "name": "Daniel Myrenne",
+        "email": "daniel.myrenne@gmail.com"
+    }
+}
