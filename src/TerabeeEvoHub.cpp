@@ -8,7 +8,7 @@
  * @param mode select how the sensors are read by the hub
  * @param style Text or Binary mode
  */
-TerabeeEvoHub::TerabeeEvoHub(HardwareSerial &serialPort, byte refreshRate, byte mode, byte style) {
+TerabeeEvoHub::TerabeeEvoHub(Stream &serialPort, byte refreshRate, byte mode, byte style) {
   _serialPort = &serialPort;
   _style = style;
   _refreshRate = refreshRate;

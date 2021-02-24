@@ -1,6 +1,6 @@
 {
     "name": "TerabeeEvoHub",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description":"Reads Sensors connected on the Terabee Evo Hub via UART.",
     "repository":
     {

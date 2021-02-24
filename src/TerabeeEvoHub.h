@@ -128,7 +128,7 @@ const byte refreshList[6][5]     = {{0x00, 0x52, 0x03, 0x01, 0xCA},
 class TerabeeEvoHub {
 
     public:
-        TerabeeEvoHub(HardwareSerial &serialPort, byte refreshRate, byte mode, byte style = BINARY);
+        TerabeeEvoHub(Stream &serialPort, byte refreshRate, byte mode, byte style = BINARY);
         void start();
         void stop();
         void read(int &slot1);
@@ -145,7 +145,7 @@ class TerabeeEvoHub {
         uint8_t crc8(uint8_t *p, uint8_t len);
         uint8_t Framereceived[20];// The variable "Framereceived[]" will contain the frame sent by the TeraRanger
         int index = 0;
-        HardwareSerial* _serialPort;
+        Stream* _serialPort;
         byte _style;
         byte _refreshRate;
         byte _mode;
