@@ -2,6 +2,8 @@
 #define TerabeeEvoHub_H
 
 #include <Arduino.h>
+#include <SoftwareSerial.h>
+#include <HardwareSerial.h>
 
 /**
  *  @param START Tells the sensor to start sending values via UART
@@ -128,7 +130,9 @@ const byte refreshList[6][5]     = {{0x00, 0x52, 0x03, 0x01, 0xCA},
 class TerabeeEvoHub {
 
     public:
-        TerabeeEvoHub(Stream &serialPort, byte refreshRate, byte mode, byte style = BINARY);
+        TerabeeEvoHub(HardwareSerial &port, byte refreshRate, byte mode, byte style = BINARY);
+        TerabeeEvoHub(SoftwareSerial &port, byte refreshRate, byte mode, byte style = BINARY);
+        void begin();
         void start();
         void stop();
         void read(int &slot1);
@@ -145,7 +149,8 @@ class TerabeeEvoHub {
         uint8_t crc8(uint8_t *p, uint8_t len);
         uint8_t Framereceived[20];// The variable "Framereceived[]" will contain the frame sent by the TeraRanger
         int index = 0;
-        Stream* _serialPort;
+        bool hwSerial;
+        Stream* port;
         byte _style;
         byte _refreshRate;
         byte _mode;

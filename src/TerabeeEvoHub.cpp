@@ -8,28 +8,42 @@
  * @param mode select how the sensors are read by the hub
  * @param style Text or Binary mode
  */
-TerabeeEvoHub::TerabeeEvoHub(Stream &serialPort, byte refreshRate, byte mode, byte style) {
-  _serialPort = &serialPort;
+TerabeeEvoHub::TerabeeEvoHub(HardwareSerial &serial, byte refreshRate, byte mode, byte style) {
+  hwSerial = true;
+  port = &serial;
   _style = style;
   _refreshRate = refreshRate;
   _mode = mode;
+}
 
-  _serialPort->begin(HUB_BAUD);
+TerabeeEvoHub::TerabeeEvoHub(SoftwareSerial &serial, byte refreshRate, byte mode, byte style) {
+  hwSerial = false;
+  port = &serial;
+  _style = style;
+  _refreshRate = refreshRate;
+  _mode = mode;
+}
+
+void TerabeeEvoHub::begin(){
+  if(hwSerial) {
+    static_cast<HardwareSerial*>(port)->begin(HUB_BAUD);
+  } else {
+    static_cast<SoftwareSerial*>(port)->begin(HUB_BAUD);
+  }
+  port->write(styleList[_style], 4);
   delay(10);
-  _serialPort->write(styleList[_style], 4);
+  port->write(refreshList[_refreshRate], 5);
   delay(10);
-  _serialPort->write(refreshList[_refreshRate], 5);
-  delay(10);
-  _serialPort->write(modeList[_mode], 4);
+  port->write(modeList[_mode], 4);
   delay(10);
 }
 
 void TerabeeEvoHub::start(){
-  _serialPort->write(runList[START], 5);
+  port->write(runList[START], 5);
 }
 
 void TerabeeEvoHub::stop(){
-  _serialPort->write(runList[STOP], 5);
+  port->write(runList[STOP], 5);
 }
 
 void TerabeeEvoHub::translate(){
@@ -117,8 +131,8 @@ void TerabeeEvoHub::read(int &slot1, int &slot2, int &slot3, int &slot4, int &sl
 
 void TerabeeEvoHub::update(){
   
-  if (_serialPort->available() > 0) {
-    uint8_t inChar = _serialPort->read();
+  if (port->available() > 0) {
+    uint8_t inChar = port->read();
     if (index == 0) {
       if (inChar == 'T')
       {
